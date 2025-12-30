@@ -1,18 +1,25 @@
 from pymongo import MongoClient
 import pandas as pd
 
-# Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017")
+def get_mongo_data(db_name="fraud_db", col_name="transactions_clean"):
+    """
+    Connects to MongoDB and fetches data directly into a pandas DataFrame.
+    
+    Returns:
+        df: A pandas DataFrame containing the collection's data.
+    """
+    # Connect to MongoDB
+    client = MongoClient("mongodb://localhost:27017")
+    
+    # Select database and collection
+    db = client[db_name]
+    collection = db[col_name]
+    
+    # Fetch data from MongoDB and convert cursor to list then DataFrame
+    df = pd.DataFrame(list(collection.find({})))
+    
+    return df
 
-# Select database and collection
-db = client["fraud_db"]
-collection = db["transactions_clean"]
-
-# Fetch data from MongoDB
-cursor = collection.find({})
-df = pd.DataFrame(list(cursor))
-
-# Export to CSV
-df.to_csv("transactions_clean.csv", index=False)
-
-print("Export completed successfully.")
+# Example usage for a Notebook:
+# df = get_mongo_data()
+# print(df.head())
