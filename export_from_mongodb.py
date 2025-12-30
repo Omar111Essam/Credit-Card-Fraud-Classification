@@ -22,7 +22,7 @@ def get_mongo_data(uri=ATLAS_URI):
 
         # 3. Access your specific database and collection
         db = client["fraud_db"]
-        collection = db["transactions_clean"]
+        collection = db["transactions"]
         
         # 4. Fetch all records
         cursor = collection.find({})
@@ -52,3 +52,4 @@ if __name__ == "__main__":
         filename = "fraud_data_cloud.csv"
         data.to_csv(filename, index=False)
         print(f"✅ Success! {len(data)} records saved to {filename}")
+
